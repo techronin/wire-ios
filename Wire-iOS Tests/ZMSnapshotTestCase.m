@@ -57,6 +57,30 @@ static NSSet *phoneWidths(void) {
     }].set;
 }
 
+static NSString *suffixForWidth(CGFloat width) {
+
+    if (width == ZMDeviceSizeIPhone4.width) {
+        return @"_iPhone4";
+    }
+    if (width == ZMDeviceSizeIPhone5.width) {
+        return @"_iPhone5";
+    }
+    if (width == ZMDeviceSizeIPhone6.width) {
+        return @"_iPhone6";
+    }
+    if (width == ZMDeviceSizeIPhone6Plus.width) {
+        return @"_iPhone6Plus";
+    }
+    if (width == ZMDeviceSizeIPadPortrait.width) {
+        return @"_iPadPortrait";
+    }
+    if (width == ZMDeviceSizeIPadLandscape.width) {
+        return @"_iPadLandscape";
+    }
+
+    return @"";
+}
+
 
 @implementation ZMSnapshotTestCase
 
@@ -138,10 +162,10 @@ static NSSet *phoneWidths(void) {
     NSString *finalIdentifier = @"";
     
     if (0 == identifier.length) {
-        finalIdentifier = NSStringFromCGSize(view.bounds.size);
+        finalIdentifier = suffixForWidth(view.bounds.size.width);
     }
     else {
-        finalIdentifier = [NSString stringWithFormat:@"%@-%@", identifier, NSStringFromCGSize(view.bounds.size)];
+        finalIdentifier = [NSString stringWithFormat:@"%@-%@", identifier, suffixForWidth(view.bounds.size.width)];
     }
     if (extraLayoutPass) {
         [[NSRunLoop currentRunLoop] runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
