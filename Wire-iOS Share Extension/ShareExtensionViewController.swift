@@ -127,7 +127,7 @@ class ShareExtensionViewController: SLComposeServiceViewController {
 
             case .startingSending:
                 DispatchQueue.main.asyncAfter(deadline: .now() + progressDisplayDelay) {
-                    guard postContent.sentAllSendables && nil == self.progressViewController else { return }
+                    guard !postContent.sentAllSendables && nil == self.progressViewController else { return }
                     self.presentSendingProgress(mode: .sending)
                 }
 
