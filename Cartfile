@@ -6,7 +6,7 @@ github "wireapp/Cartography" "1.0.1-wire-swift3.0.2"
 github "wireapp/TTTAttributedLabel" "2.0.0-swift3.0.2"
 github "wireapp/ZipArchive" "1.6.1-swift3.0.2"
 github "wireapp/wire-ios-share-engine" ~> 22.0
-github "wireapp/wire-ios-sync-engine" "845c45396f00e4be3fb21f99f033a02ab722d128"
+github "wireapp/wire-ios-sync-engine" "f217adcc415190bc6eb44cd4bf4ea1b73227d986"
 github "wireapp/onepassword-app-extension" "framework/1.8.2-wire-swift3.0.2"
 github "wireapp/FormatterKit" "1.8.1-swift3.0.2"
 github "wireapp/VIMNetworking" "v6.0.2-wire-swift3.0.2"
