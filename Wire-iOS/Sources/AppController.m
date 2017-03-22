@@ -246,6 +246,8 @@ NSString *const ZMUserSessionDidBecomeAvailableNotification = @"ZMUserSessionDid
     
     [self.window makeKeyAndVisible];
     
+    //[TestView wr_testShowInstanceWithFullscreen:NO];
+    
     if (self.seState == AppSEStateMigration) {
         [launchController showLoadingScreen];
     }
@@ -385,6 +387,7 @@ NSString *const ZMUserSessionDidBecomeAvailableNotification = @"ZMUserSessionDid
 
 - (void)contentSizeCategoryDidChange:(NSNotification *)notification
 {
+    [Message invalidateMarkdownStyle];
     [UIFont wr_flushFontCache];
     [NSAttributedString wr_flushCellParagraphStyleCache];
     [self applyFontScheme];
@@ -557,6 +560,7 @@ NSString *const ZMUserSessionDidBecomeAvailableNotification = @"ZMUserSessionDid
     if (!AutomationHelper.sharedHelper.skipFirstLoginAlerts) {
         [[ZMUserSession sharedSession] setupPushNotificationsForApplication:[UIApplication sharedApplication]];
     }
+    [[Settings sharedSettings] updateAVSCallingConstantBitRateValue];
     [self loadAppropriateController];
 }
 

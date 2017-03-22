@@ -34,8 +34,21 @@ open class IconSystemCell: ConversationCell, TTTAttributedLabelDelegate {
     
     var labelTextColor: UIColor?
     var labelTextBlendedColor: UIColor?
-    var labelFont: UIFont?
+
+    var lineBaseLineConstraint: NSLayoutConstraint?
+
+    var labelFont: UIFont? {
+        didSet {
+            updateLineBaseLineConstraint()
+        }
+    }
     var labelBoldFont: UIFont?
+
+    var verticalInset: CGFloat {
+        return 16
+    }
+
+    private let lineMedianYOffset: CGFloat = 2
 
     public required override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -75,20 +88,18 @@ open class IconSystemCell: ConversationCell, TTTAttributedLabelDelegate {
     }
     
     private func createConstraints() {
-        let inset: CGFloat = 16
         constrain(self.leftIconContainer, self.leftIconView, self.labelView, self.messageContentView, self.authorLabel) { (leftIconContainer: LayoutProxy, leftIconView: LayoutProxy, labelView: LayoutProxy, messageContentView: LayoutProxy, authorLabel: LayoutProxy) -> () in
             leftIconContainer.leading == messageContentView.leading
             leftIconContainer.trailing == authorLabel.leading
-            leftIconContainer.top == messageContentView.top + inset
             leftIconContainer.bottom <= messageContentView.bottom
             leftIconContainer.height == leftIconView.height
             leftIconView.center == leftIconContainer.center
             leftIconView.height == 16
             leftIconView.height == leftIconView.width
             labelView.leading == leftIconContainer.trailing
-            labelView.top == messageContentView.top + inset + 3
+            labelView.top == messageContentView.top + verticalInset + 2
             labelView.trailing <= messageContentView.trailing - 72
-            labelView.bottom <= messageContentView.bottom - inset
+            labelView.bottom <= messageContentView.bottom - verticalInset
             messageContentView.height >= 32
         }
 
@@ -96,8 +107,19 @@ open class IconSystemCell: ConversationCell, TTTAttributedLabelDelegate {
             lineView.leading == labelView.trailing + 16
             lineView.height == .hairline
             lineView.trailing == contentView.trailing
-            lineView.top == messageContentView.top + inset + 8
         }
+
+        updateLineBaseLineConstraint()
+
+        constrain(lineView, labelView, leftIconContainer) { (lineView: LayoutProxy, labelView: LayoutProxy, icon: LayoutProxy) -> () in
+            lineBaseLineConstraint = lineView.centerY == labelView.top + self.labelView.font.median - lineMedianYOffset
+            icon.centerY == lineView.centerY
+        }
+    }
+
+    private func updateLineBaseLineConstraint() {
+        guard let font = labelFont else { return }
+        lineBaseLineConstraint?.constant = font.median - lineMedianYOffset
     }
 
     open override var canResignFirstResponder: Bool {
@@ -105,4 +127,13 @@ open class IconSystemCell: ConversationCell, TTTAttributedLabelDelegate {
             return false
         }
     }
+}
+
+
+fileprivate extension UIFont {
+
+    var median: CGFloat {
+        return ascender - (xHeight / 2)
+    }
+
 }
